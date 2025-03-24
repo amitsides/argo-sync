@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev
+            namespace: dev
+            path: dev
+          - env: stage
+            namespace: stage
+            path: stage
+          - env: prod
+            namespace: prod
+            path: stage
+  template:
+    metadata:
+      name: 'app-{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/amitsides/argo-sync.git
+        path: '{{.path.path}}'
+        targetRevision: HEAD
+      destination:
+        server: https://A2EFAE452509319A9F5B460B3798E16B.gr7.us-east-1.eks.amazonaws.com
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

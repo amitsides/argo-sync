@@ -1,0 +1,3 @@
+kubectl.exe apply -f application-dev.yaml
+kubectl.exe apply -f application-stage.yaml
+kubectl.exe apply -f application-prod.yaml
